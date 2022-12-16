@@ -5,7 +5,7 @@
 #
 # AUTHOR             :     Louis GAMBART
 # CREATION DATE      :     2022.12.14
-# RELEASE            :     v1.0.0
+# RELEASE            :     v2.0.0
 # USAGE SYNTAX       :     .\Check-Broken-In-File.sh
 #
 # SCRIPT DESCRIPTION :     This script is used to check if a file contains the string "broken" in .req files
@@ -15,20 +15,16 @@
 #                 - RELEASE NOTES -
 # v1.0.0  2022.12.14 - Louis GAMBART - Initial version
 # v1.1.0  2022.12.15 - Louis GAMBART - Add check to control only .req files
+# v2.0.0  2022.12.16 - Louis GAMBART - Complete change to be more optimized
 #
 #==========================================================================================
-source config.sh
-for file in *
+ls ./*.req > current.txt
+for file in $(cat current.txt already_done.txt | sort -h | uniq -u)
 do
-  file_date=$(stat -c %y "$file")
-  file_date=${file_date:0:19}
-  if [[ $file_date > $last_run ]] && [[ $file == *.req ]]
+  echo "$file" >> already_done.txt
+  if grep -q "broken" "$file"
     then
-      if grep -q "broken" "$file"
-        then
-          echo "File $file is broken"
-      fi
+      echo "File $file is broken"
   fi
 done
-current_datetime=$(date +%Y-%m-%d\ %H:%M:%S)
-sed -i "s/last_run=.*/last_run='$current_datetime'/" config.sh
+rm current.txt

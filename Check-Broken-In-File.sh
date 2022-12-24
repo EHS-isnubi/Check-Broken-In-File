@@ -18,13 +18,13 @@
 # v2.0.0  2022.12.16 - Louis GAMBART - Complete change to be more optimized
 #
 #==========================================================================================
-ls ./*.req > current.txt
-for file in $(cat current.txt already_done.txt | sort -h | uniq -u)
+ls ./*.req > cur.txt
+for file in $(cat cur.txt old.txt | sort -h | uniq -u)
 do
-  echo "$file" >> already_done.txt
+  echo "$file" >> old.txt
   if grep -q "broken" "$file"
     then
       echo "File $file is broken"
   fi
 done
-rm current.txt
+rm cur.txt

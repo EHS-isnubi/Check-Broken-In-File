@@ -18,6 +18,7 @@
 # v2.0.0  2022.12.16 - Louis GAMBART - Complete change to be more optimized
 #
 #==========================================================================================
+
 ls ./*.req > cur.txt
 for file in $(cat cur.txt old.txt | sort -h | uniq -u)
 do
